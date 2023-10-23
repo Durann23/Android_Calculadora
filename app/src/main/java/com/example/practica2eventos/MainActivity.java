@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,7 +17,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String operator = "";
     private boolean isOperatorClicked = false;
 
-
+    String currentText;
+    int id;
 
 
 
@@ -24,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Debes establecer el contenido primero
         inputTextView = findViewById(R.id.inputTextView);
-
-        setContentView(R.layout.activity_main);
 
         Button num00 = findViewById(R.id.num00);
         Button num0 = findViewById(R.id.num0);
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button mas = findViewById(R.id.mas);
         Button igual = findViewById(R.id.igual);
 
+
+
         punto.setOnClickListener(this);
         porce.setOnClickListener(this);
         del.setOnClickListener(this);
@@ -74,71 +77,113 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onClick(View view) {
-        String currentText = inputTextView.getText().toString();
-        int id = view.getId();
+        currentText=inputTextView.getText().toString();
+        id = view.getId();
 
         if (id == R.id.num00) {
-            currentText += "00";
+            if(currentText==""){
+
+                currentText += "0";
+            }
+            else if(currentText.equals( "0")){
+                currentText = "0";
+            }
+            else{
+                currentText += "00";
+            }
         } else if (id == R.id.num0) {
             currentText += "0";
         } else if (id == R.id.num1) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "1";
         } else if (id == R.id.num2) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "2";
         } else if (id == R.id.num3) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "3";
         } else if (id == R.id.num4) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "4";
         } else if (id == R.id.num5) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "5";
         } else if (id == R.id.num6) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "6";
         } else if (id == R.id.num7) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "7";
         } else if (id == R.id.num8) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
             currentText += "8";
         } else if (id == R.id.num9) {
-            currentText += "9";
-        } else if (id == R.id.mas) {
-            if (!currentText.isEmpty()) {
-                firstNumber = Double.parseDouble(currentText);
-                operator = "+";
-                isOperatorClicked = true;
+            if(currentText.equals("0")){
+                currentText="";
             }
+            currentText += "9";
+        }
+        else if (id == R.id.mas) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
+            currentText += "+";
+        }
+        else if (id == R.id.menos) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
+            currentText += "-";
+        }
+        else if (id == R.id.mult) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
+            currentText += "x";
+        }
+        else if (id == R.id.div) {
+            if(currentText.equals("0")){
+                currentText="";
+            }
+            currentText += "/";
+        }
 
-        } else if (id == R.id.igual) {
+        inputTextView.setText(currentText);
+
+
+        if (id == R.id.igual) {
 
             if (isOperatorClicked && !currentText.isEmpty()) {
-                double secondNumber = Double.parseDouble(currentText);
-                double result = 0;
 
-                // Realiza la operación correspondiente según el operador
-                switch (operator) {
-                    case "+":
-                        result = firstNumber + secondNumber;
-                        break;
-                    case "-":
-                        result = firstNumber - secondNumber;
-                        break;
-                    case "*":
-                        result = firstNumber * secondNumber;
-                        break;
-                    case "%":
-                        result = firstNumber * (0.01*secondNumber);
-                        break;
-                    case "/":
-                        if (secondNumber != 0) {
-                            result = firstNumber / secondNumber;
-                        } else {
-                            // Manejo de error: División por cero
-                        }
-                        break;
-                    // Agrega más casos para otros operadores
+                Expression expression = new ExpressionBuilder(currentText).build();
+
+                try {
+                    // Evaluar la expresión y obtener el resultado
+                    double result = expression.evaluate();
+
+                    // Mostrar el resultado
+                    inputTextView.setText(String.valueOf(result));
+                } catch (ArithmeticException e) {
+                    // Manejar errores, como división por cero
+                    inputTextView.setText("Error en la expresión");
                 }
 
-                // Muestra el resultado en el campo de entrada
-                inputTextView.setText(String.valueOf(result));
-                isOperatorClicked = true; // Establece la bandera para futuras operaciones
             }
 
 

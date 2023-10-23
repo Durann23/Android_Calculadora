@@ -26,13 +26,20 @@
             android:gravity="bottom"
             >
             <TextView
-                android:id="@+id/arriba"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
-            <TextView
                 android:id="@+id/inputTextView"
                 android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textColor="@color/white"
+                android:textSize="23sp"
+                android:gravity="right"/>
+            <TextView
+                android:id="@+id/arriba"
+                android:textColor="@color/white"
+                android:textSize="23sp"
+                android:text=""
+                android:layout_width="match_parent"
                 android:layout_height="80dp"/>
+
 
 
 
@@ -229,8 +236,7 @@
                     android:layout_height="match_parent"
                     android:text="00"
                     android:textSize="40sp"
-                    android:textColor="@color/white"
-                    android:background="@color/none"/>
+                    android:textColor="@color/white"/>
                 <Button
                     android:id="@+id/num0"
                     android:layout_width="0dp"
